@@ -46,10 +46,25 @@ var n1 = new Nestable('#nestable1', { group: 1 }).collapseAll();
 
 Collapse all nodes
 
-### #.cExpandAll()
+### #.expandAll()
 
 Expand all nodes
 
+### Events
+
+```js
+n1.on('dragStart', function(nestable){
+    ...
+});
+
+n1.on('dragMove', function(nestable){
+    ...
+});
+
+n1.on('dragEnd', function(element, nestable){
+    ...
+});
+```
 
 
 ## Author(s)
