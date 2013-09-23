@@ -69,8 +69,8 @@ n1.on('dragEnd', function(element, nestable){
 
 ## Author(s)
 
-Edgedesign s.r.o. – [Tomas Kuba](https://github.com/tomaskuba)
-Based on [Nestable by David Bushell](https://github.com/dbushell/Nestable)
+- Edgedesign s.r.o. – [Tomas Kuba](https://github.com/tomaskuba)
+- Based on [Nestable by David Bushell](https://github.com/dbushell/Nestable)
 
 ## License
 
