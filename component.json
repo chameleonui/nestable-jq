@@ -2,10 +2,10 @@
   "name": "nestable-jq",
   "repo": "chameleonui/nestable-jq",
   "description": "Drag & drop hierarchical list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [],
   "dependencies": {
-    "component/jquery": "*",
+    "components/jquery": "1.11",
     "component/emitter": "*"
   },
   "development": {},
