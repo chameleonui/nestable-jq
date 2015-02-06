@@ -30,7 +30,8 @@ var defaults = {
     collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',
     group           : 0,
     maxDepth        : 5,
-    threshold       : 20
+    threshold       : 20,
+    allowHorizontal : true
 };
 ```
 ### new Nestable(element, options)
