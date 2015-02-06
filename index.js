@@ -1,5 +1,5 @@
-var $ = require('jquery');
-var Emitter = require('emitter');
+var $               = require('jquery'),
+    Emitter         = require('emitter');
 
 var hasTouch = 'ontouchstart' in window;
 
@@ -44,7 +44,8 @@ var defaults = {
     collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',
     group           : 0,
     maxDepth        : 5,
-    threshold       : 20
+    threshold       : 20,
+    allowHorizontal : true
 };
 
 module.exports = NestableJq;
@@ -54,7 +55,7 @@ function NestableJq(element, options) {
     this.w  = $(window);
     this.el = $(element);
     this.options = $.extend({}, defaults, options);
-    Emitter(this); 
+    Emitter(this);
     this.init();
 }
 
@@ -366,39 +367,41 @@ NestableJq.prototype = {
         /**
          * move horizontal
          */
-        if (mouse.dirAx && mouse.distAxX >= opt.threshold) {
-            // reset move distance on x-axis for new phase
-            mouse.distAxX = 0;
-            prev = this.placeEl.prev(opt.itemNodeName);
-            // increase horizontal level if previous sibling exists and is not collapsed
-            if (mouse.distX > 0 && prev.length && !prev.hasClass(opt.collapsedClass)) {
-                // cannot increase level when item above is collapsed
-                list = prev.find(opt.listNodeName).last();
-                // check if depth limit has reached
-                depth = this.placeEl.parents(opt.listNodeName).length;
-                if (depth + this.dragDepth <= opt.maxDepth) {
-                    // create new sub-level if one doesn't exist
-                    if (!list.length) {
-                        list = $('<' + opt.listNodeName + '/>').addClass(opt.listClass);
-                        list.append(this.placeEl);
-                        prev.append(list);
-                        this.setParent(prev);
-                    } else {
-                        // else append to next level up
-                        list = prev.children(opt.listNodeName).last();
-                        list.append(this.placeEl);
+        if (opt.allowHorizontal) {
+            if (mouse.dirAx && mouse.distAxX >= opt.threshold) {
+                // reset move distance on x-axis for new phase
+                mouse.distAxX = 0;
+                prev = this.placeEl.prev(opt.itemNodeName);
+                // increase horizontal level if previous sibling exists and is not collapsed
+                if (mouse.distX > 0 && prev.length && !prev.hasClass(opt.collapsedClass)) {
+                    // cannot increase level when item above is collapsed
+                    list = prev.find(opt.listNodeName).last();
+                    // check if depth limit has reached
+                    depth = this.placeEl.parents(opt.listNodeName).length;
+                    if (depth + this.dragDepth <= opt.maxDepth) {
+                        // create new sub-level if one doesn't exist
+                        if (!list.length) {
+                            list = $('<' + opt.listNodeName + '/>').addClass(opt.listClass);
+                            list.append(this.placeEl);
+                            prev.append(list);
+                            this.setParent(prev);
+                        } else {
+                            // else append to next level up
+                            list = prev.children(opt.listNodeName).last();
+                            list.append(this.placeEl);
+                        }
                     }
                 }
-            }
-            // decrease horizontal level
-            if (mouse.distX < 0) {
-                // we can't decrease a level if an item preceeds the current one
-                next = this.placeEl.next(opt.itemNodeName);
-                if (!next.length) {
-                    parent = this.placeEl.parent();
-                    this.placeEl.closest(opt.itemNodeName).after(this.placeEl);
-                    if (!parent.children().length) {
-                        this.unsetParent(parent.parent());
+                // decrease horizontal level
+                if (mouse.distX < 0) {
+                    // we can't decrease a level if an item preceeds the current one
+                    next = this.placeEl.next(opt.itemNodeName);
+                    if (!next.length) {
+                        parent = this.placeEl.parent();
+                        this.placeEl.closest(opt.itemNodeName).after(this.placeEl);
+                        if (!parent.children().length) {
+                            this.unsetParent(parent.parent());
+                        }
                     }
                 }
             }
@@ -415,7 +418,7 @@ NestableJq.prototype = {
             this.dragEl[0].style.visibility = 'visible';
         }
         if (this.pointEl.hasClass(opt.handleClass)) {
-            this.pointEl = this.pointEl.parent(opt.itemNodeName);
+            this.pointEl = this.pointEl.closest(opt.itemNodeName);
         }
         if (this.pointEl.hasClass(opt.emptyClass)) {
             isEmpty = true;
