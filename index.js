@@ -95,7 +95,9 @@ NestableJq.prototype = {
         var onStartEvent = function(e)
         {
             var handle = $(e.target);
-            if (!handle.hasClass(list.options.handleClass)) {
+            if (handle.hasClass(list.options.noDragClass)) {
+                return;
+            } else {
                 if (handle.closest('.' + list.options.noDragClass).length) {
                     return;
                 }
